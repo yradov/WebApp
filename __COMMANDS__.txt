@@ -1,5 +1,5 @@
 dotnet new globaljson --sdk-version 5.0.405 --output WebApp
-dotnet new web --no-https --output WebApp
+dotnet new web --no-https --output WebApp --framework net5.0
 dotnet new sln -o WebApp
 dotnet sln WebApp add WebApp
 -------------------------------------------------
@@ -8,3 +8,7 @@ git remote add origin https://github.com/yradov/WebApp.git
 git branch -M master
 git push -u origin master
 -------------------------------------------------
+Error	NETSDK1045	The current .NET SDK does not support targeting .NET 6.0.  
+Either target .NET 5.0 or lower, or use a version of the .NET SDK that supports .NET 6.0.	
+C:\Program Files\dotnet\sdk\5.0.407\Sdks\Microsoft.NET.Sdk\targets\Microsoft.NET.TargetFrameworkInference.targets
+in \WebApp\WebApp.csproj change TargetFramework to 5.0
