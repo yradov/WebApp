@@ -1,0 +1,7 @@
+dotnet new globaljson --sdk-version 5.0.405 --output WebApp
+dotnet new web --no-https --output WebApp
+dotnet new sln -o WebApp
+dotnet sln WebApp add WebApp
+
+
+
