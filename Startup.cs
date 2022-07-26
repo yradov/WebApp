@@ -10,7 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Models;
- 
+using WebApp.Middleware;
 
 namespace WebApp
 {
@@ -40,9 +40,9 @@ namespace WebApp
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseStaticFiles();
             app.UseRouting();
-
+            app.UseMiddleware<TestMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/", async context =>
