@@ -3,6 +3,8 @@ dotnet new globaljson --sdk-version 5.0.405 --output WebApp
 dotnet new web --no-https --output WebApp --framework net5.0
 dotnet new sln -o WebApp
 dotnet sln WebApp add WebApp
+
+dotnet build
 -------------------------------------------------
 ### Push an existing repository from the command line
 git remote add origin https://github.com/yradov/WebApp.git
