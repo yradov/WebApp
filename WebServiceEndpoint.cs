@@ -17,6 +17,13 @@ namespace Microsoft.AspNetCore.Builder
 
         public static void MapWebService(this IEndpointRouteBuilder app)
         {
+            app.MapGet(BASEURL, async context => {
+                DataContext data = context.RequestServices.GetService<DataContext>();
+
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsync(JsonSerializer.Serialize<IEnumerable<Product>>(data.Products));
+            });
+
             app.MapGet($"{BASEURL}/{{id}}", async context =>
             {
                 long key = long.Parse(context.Request.RouteValues["id"] as string);
@@ -34,7 +41,16 @@ namespace Microsoft.AspNetCore.Builder
                     context.Response.ContentType = "application/json";
                     await context.Response.WriteAsync(JsonSerializer.Serialize<Product>(p));
                 }
+            });
 
+            app.MapPost(BASEURL, async context => {
+                DataContext data = context.RequestServices.GetService<DataContext>();
+
+                Product p = await JsonSerializer.DeserializeAsync<Product>(context.Request.Body);
+                await data.AddAsync(p);
+                await data.SaveChangesAsync();
+
+                context.Response.StatusCode = StatusCodes.Status200OK;
             });
         }
     }// WebServiceEndpoint

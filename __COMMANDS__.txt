@@ -41,5 +41,5 @@ libman init -p cdnjs
 libman install twitter-bootstrap@4.3.1 -d wwwroot/lib/twitter-bootstrap
 libman install font-awesome@5.15.4 -d wwwroot/lib/font-awesome
 
-
-
+### Generate POST request
+Invoke-RestMethod http://localhost:5000/api/products -Method POST -Body (@{ Name="Swimming Goggles"; Price=12.75; CategoryId=1; SupplierId=1 } | ConvertTo-Json) -ContentType "application/json"
