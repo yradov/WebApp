@@ -49,5 +49,12 @@ namespace WebApp.Controllers
             //return context.Products.FirstOrDefault(); without model binding
             return context.Products.Find(id);
         }
-    }
+
+        public Product SaveProduct([FromBody] Product product)
+        {
+            context.Products.Add(product);
+            context.SaveChanges();
+            return product;
+        }
+    }// ProductsController
 }

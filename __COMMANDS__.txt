@@ -43,3 +43,4 @@ libman install font-awesome@5.15.4 -d wwwroot/lib/font-awesome
 
 ### Generate POST request from terminal
 Invoke-RestMethod http://localhost:5000/api/products -Method POST -Body (@{ Name="Swimming Goggles"; Price=12.75; CategoryId=1; SupplierId=1 } | ConvertTo-Json) -ContentType "application/json"
+Invoke-RestMethod http://localhost:5000/api/products -Method POST -Body (@{ Name="Soccer Boots"; Price=89.99; CategoryId=2; SupplierId=2 } | ConvertTo-Json) -ContentType "application/json"
