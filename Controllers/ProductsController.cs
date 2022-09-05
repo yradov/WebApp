@@ -64,5 +64,12 @@ namespace WebApp.Controllers
             context.Products.Update(product);
             context.SaveChanges();
         }
+
+        [HttpDelete("{id}")]
+        public void DeleteProduct(long id)
+        {
+            context.Products.Remove(new Product() { ProductId = id });
+            context.SaveChanges();
+        }
     }// ProductsController
 }
