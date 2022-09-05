@@ -57,6 +57,8 @@ namespace WebApp.Controllers
             context.SaveChanges();
             return product;
         }
+        // Invoke-RestMethod http://localhost:5000/api/products -Method POST -Body (@{ Name="Soccer Boots"; Price=89.99; CategoryId=2; SupplierId=2 } | ConvertTo-Json) -ContentType "application/json"
+
 
         [HttpPut]
         public void UpdateProduct([FromBody] Product product)
@@ -64,6 +66,8 @@ namespace WebApp.Controllers
             context.Products.Update(product);
             context.SaveChanges();
         }
+        // Invoke-RestMethod http://localhost:5000/api/products -Method PUT -Body (@{ ProductId=1; Name="Green Kayak"; Price=275; CategoryId=21; SupplierId=1 } | ConvertTo-Json) -ContentType "application/json"
+
 
         [HttpDelete("{id}")]
         public void DeleteProduct(long id)
@@ -71,5 +75,6 @@ namespace WebApp.Controllers
             context.Products.Remove(new Product() { ProductId = id });
             context.SaveChanges();
         }
+        // Invoke-RestMethod http://localhost:5000/api/products/2 -Method DELETE
     }// ProductsController
 }
