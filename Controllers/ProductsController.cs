@@ -50,11 +50,19 @@ namespace WebApp.Controllers
             return context.Products.Find(id);
         }
 
+        [HttpPost]
         public Product SaveProduct([FromBody] Product product)
         {
             context.Products.Add(product);
             context.SaveChanges();
             return product;
+        }
+
+        [HttpPut]
+        public void UpdateProduct([FromBody] Product product)
+        {
+            context.Products.Update(product);
+            context.SaveChanges();
         }
     }// ProductsController
 }
