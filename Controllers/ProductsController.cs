@@ -105,5 +105,12 @@ namespace WebApp.Controllers
             return Redirect("/api/products/1");
         }
         // Invoke-RestMethod http://localhost:5000/api/products/redirect
+
+        [HttpGet("redirect2")]
+        public IActionResult Redirect2()
+        {
+            return RedirectToRoute(new { controller = "Products", action = "GetProduct", Id = 1});
+        }
+        // Invoke-RestMethod http://localhost:5000/api/products/redirect2
     }// ProductsController
 }
