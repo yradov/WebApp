@@ -52,6 +52,7 @@ namespace WebApp.Controllers
             //return context.Products.Find(id);
             return await context.Products.FindAsync(id);
         }
+        // Invoke-WebRequest http://localhost:5000/api/products/1000 | Select-Object StatusCode
 
         [HttpPost]
         public async Task<Product> SaveProduct([FromBody] ProductBindingTarget target)
