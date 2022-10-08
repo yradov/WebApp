@@ -98,5 +98,12 @@ namespace WebApp.Controllers
             await context.SaveChangesAsync();
         }
         // Invoke-RestMethod http://localhost:5000/api/products/2 -Method DELETE
+    
+        [HttpGet("redirect")]
+        public IActionResult Redirect()
+        {
+            return Redirect("/api/products/1");
+        }
+        // Invoke-RestMethod http://localhost:5000/api/products/redirect
     }// ProductsController
 }
