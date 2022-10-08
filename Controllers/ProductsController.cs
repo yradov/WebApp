@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using WebApp.Models;
+using System.Threading.Channels;
 
 namespace WebApp.Controllers
 {
@@ -19,7 +20,7 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Product> GetProducts()
+        public IAsyncEnumerable<Product> GetProducts()
         {
             {
                 /**
@@ -36,7 +37,8 @@ namespace WebApp.Controllers
         }
 
         [HttpGet("{id}")]
-        public Product GetProduct(long id, [FromServices] ILogger<ProductsController> logger)
+        //public Product GetProduct(long id, [FromServices] ILogger<ProductsController> logger)
+        public async Task<Product> GetProduct(long id, [FromServices] ILogger<ProductsController> logger)
         {
             {
                 /**
@@ -45,35 +47,36 @@ namespace WebApp.Controllers
                 //return new Product(){ProductId = 1, Name = "Test Product"};
             }
 
-            logger.LogDebug("GetProduct Action Invoked");
+            //logger.LogDebug("GetProduct Action Invoked");
             //return context.Products.FirstOrDefault(); without model binding
-            return context.Products.Find(id);
+            //return context.Products.Find(id);
+            return await context.Products.FindAsync(id);
         }
 
         [HttpPost]
-        public Product SaveProduct([FromBody] Product product)
+        public async Task<Product> SaveProduct([FromBody] Product product)
         {
-            context.Products.Add(product);
-            context.SaveChanges();
+            await context.Products.AddAsync(product);
+            await context.SaveChangesAsync();
             return product;
         }
         // Invoke-RestMethod http://localhost:5000/api/products -Method POST -Body (@{ Name="Soccer Boots"; Price=89.99; CategoryId=2; SupplierId=2 } | ConvertTo-Json) -ContentType "application/json"
 
 
         [HttpPut]
-        public void UpdateProduct([FromBody] Product product)
+        public async Task UpdateProduct([FromBody] Product product)
         {
             context.Products.Update(product);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
         // Invoke-RestMethod http://localhost:5000/api/products -Method PUT -Body (@{ ProductId=1; Name="Green Kayak"; Price=275; CategoryId=21; SupplierId=1 } | ConvertTo-Json) -ContentType "application/json"
 
 
         [HttpDelete("{id}")]
-        public void DeleteProduct(long id)
+        public async Task DeleteProduct(long id)
         {
             context.Products.Remove(new Product() { ProductId = id });
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
         // Invoke-RestMethod http://localhost:5000/api/products/2 -Method DELETE
     }// ProductsController
