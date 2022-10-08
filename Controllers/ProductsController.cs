@@ -38,7 +38,8 @@ namespace WebApp.Controllers
 
         [HttpGet("{id}")]
         //public Product GetProduct(long id, [FromServices] ILogger<ProductsController> logger)
-        public async Task<Product> GetProduct(long id, [FromServices] ILogger<ProductsController> logger)
+        //public async Task<Product> GetProduct(long id, [FromServices] ILogger<ProductsController> logger)
+        public async Task<IActionResult> GetProduct(long id)
         {
             {
                 /**
@@ -46,22 +47,39 @@ namespace WebApp.Controllers
                  */
                 //return new Product(){ProductId = 1, Name = "Test Product"};
             }
+            {
+                //logger.LogDebug("GetProduct Action Invoked");
+                //return context.Products.FirstOrDefault(); without model binding
+                //return context.Products.Find(id);
+                //return await context.Products.FindAsync(id);
 
-            //logger.LogDebug("GetProduct Action Invoked");
-            //return context.Products.FirstOrDefault(); without model binding
-            //return context.Products.Find(id);
-            return await context.Products.FindAsync(id);
+            }
+            Product p = await context.Products.FindAsync(id);
+            if (p == null)
+            {
+                return NotFound();
+            }
+            return Ok(p);
         }
         // Invoke-WebRequest http://localhost:5000/api/products/1000 | Select-Object StatusCode
 
         [HttpPost]
-        public async Task<Product> SaveProduct([FromBody] ProductBindingTarget target)
+        //public async Task<Product> SaveProduct([FromBody] ProductBindingTarget target)
+        public async Task<IActionResult> SaveProduct([FromBody] ProductBindingTarget target)
         {
-            await context.Products.AddAsync(target.ToProduct);
+            {
+                // when return Task<Product>:
+                //await context.Products.AddAsync(target.ToProduct());
+                //await context.SaveChangesAsync();
+                //return target.ToProduct();
+            }
+            Product p = target.ToProduct();
+            await context.Products.AddAsync(p);
             await context.SaveChangesAsync();
-            return target.ToProduct;
+            return Ok(p);
         }
         // Invoke-RestMethod http://localhost:5000/api/products -Method POST -Body (@{ Name="Soccer Boots"; Price=89.99; CategoryId=2; SupplierId=2 } | ConvertTo-Json) -ContentType "application/json"
+        // Invoke-RestMethod http://localhost:5000/api/products -Method POST -Body (@{ Name="Boot Laces"; Price=19.99; CategoryId=2; SupplierId=2 } | ConvertTo-Json) -ContentType "application/json"
 
 
         [HttpPut]
