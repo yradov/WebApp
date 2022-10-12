@@ -73,13 +73,19 @@ namespace WebApp.Controllers
                 //await context.SaveChangesAsync();
                 //return target.ToProduct();
             }
-            Product p = target.ToProduct();
-            await context.Products.AddAsync(p);
-            await context.SaveChangesAsync();
-            return Ok(p);
+            if (ModelState.IsValid)
+            {
+                Product p = target.ToProduct();
+                await context.Products.AddAsync(p);
+                await context.SaveChangesAsync();
+                return Ok(p);
+            }
+            return BadRequest(ModelState);
         }
         // Invoke-RestMethod http://localhost:5000/api/products -Method POST -Body (@{ Name="Soccer Boots"; Price=89.99; CategoryId=2; SupplierId=2 } | ConvertTo-Json) -ContentType "application/json"
         // Invoke-RestMethod http://localhost:5000/api/products -Method POST -Body (@{ Name="Boot Laces"; Price=19.99; CategoryId=2; SupplierId=2 } | ConvertTo-Json) -ContentType "application/json"
+        // check ModelState.IsValid
+        // Invoke-WebRequest http://localhost:5000/api/products -Method POST -Body (@{ Name="Boot Laces" } | ConvertTo-Json) -ContentType "application/json"
 
 
         [HttpPut]
