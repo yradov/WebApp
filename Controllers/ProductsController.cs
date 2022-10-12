@@ -9,6 +9,7 @@ using System.Threading.Channels;
 
 namespace WebApp.Controllers
 {
+    [ApiController]
     [Route("api/[controller]")]
     public class ProductsController : Controller
     {
@@ -59,13 +60,22 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-            return Ok(p);
+            //return Ok(p);
+            // remove fields with null
+            return Ok(new { 
+                ProductId = p.ProductId, 
+                Name = p.Name,
+                Price = p.Price,
+                CategoryId = p.CategoryId,
+                SupplierId = p.SupplierId
+            });
         }
         // Invoke-WebRequest http://localhost:5000/api/products/1000 | Select-Object StatusCode
 
         [HttpPost]
         //public async Task<Product> SaveProduct([FromBody] ProductBindingTarget target)
-        public async Task<IActionResult> SaveProduct([FromBody] ProductBindingTarget target)
+        //public async Task<IActionResult> SaveProduct([FromBody] ProductBindingTarget target)
+        public async Task<IActionResult> SaveProduct(ProductBindingTarget target)
         {
             {
                 // when return Task<Product>:
@@ -73,14 +83,14 @@ namespace WebApp.Controllers
                 //await context.SaveChangesAsync();
                 //return target.ToProduct();
             }
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 Product p = target.ToProduct();
                 await context.Products.AddAsync(p);
                 await context.SaveChangesAsync();
                 return Ok(p);
-            }
-            return BadRequest(ModelState);
+            //}
+            //return BadRequest(ModelState);
         }
         // Invoke-RestMethod http://localhost:5000/api/products -Method POST -Body (@{ Name="Soccer Boots"; Price=89.99; CategoryId=2; SupplierId=2 } | ConvertTo-Json) -ContentType "application/json"
         // Invoke-RestMethod http://localhost:5000/api/products -Method POST -Body (@{ Name="Boot Laces"; Price=19.99; CategoryId=2; SupplierId=2 } | ConvertTo-Json) -ContentType "application/json"
@@ -89,7 +99,8 @@ namespace WebApp.Controllers
 
 
         [HttpPut]
-        public async Task UpdateProduct([FromBody] Product product)
+        //public async Task UpdateProduct([FromBody] Product product)
+        public async Task UpdateProduct(Product product)
         {
             context.Products.Update(product);
             await context.SaveChangesAsync();
