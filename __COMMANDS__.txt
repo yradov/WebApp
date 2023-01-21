@@ -46,3 +46,7 @@ Invoke-RestMethod http://localhost:5000/api/products -Method POST -Body (@{ Name
 
 Sending a POST Request to the Example Application
 Invoke-RestMethod http://localhost:5000/api/products -Method POST -Body (@{ Name="Soccer Boots"; Price=89.99; CategoryId=2; SupplierId=2 } | ConvertTo-Json) -ContentType "application/json"
+
+### add NewtonsoftJson
+dotnet add package Microsoft.AspNetCore.Mvc.NewtonsoftJson --version 7.0.2
+
