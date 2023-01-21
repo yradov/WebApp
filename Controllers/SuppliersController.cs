@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using WebApp.Models;
 namespace WebApp.Controllers
 {
     [ApiController]
-    [Route("api/[controler]")]
+    [Route("api/[controller]")]
     public class SuppliersController : Controller
     {
         private DataContext context;
@@ -21,7 +22,23 @@ namespace WebApp.Controllers
         [HttpGet("{id}")]
         public async Task<Supplier> GetSupplier(long id)
         {
-            return await context.Suppliers.FindAsync(id);
+            //return await context.Suppliers.FindAsync(id);
+
+            /** JsonException: циклическая ссылка */
+            //return await context.Suppliers
+            //    .Include(s => s.Products)
+            //    .FirstAsync(s => s.SupplierId == id);
+
+            Supplier supplier = await context.Suppliers
+                .Include(s => s.Products)
+                .FirstAsync(s => s.SupplierId == id);
+
+            foreach (Product product in supplier.Products)
+            {
+                product.Supplier = null;
+            }
+
+            return supplier;
         }
     }
 }
