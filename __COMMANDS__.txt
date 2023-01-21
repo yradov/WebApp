@@ -50,3 +50,5 @@ Invoke-RestMethod http://localhost:5000/api/products -Method POST -Body (@{ Name
 ### add NewtonsoftJson
 dotnet add package Microsoft.AspNetCore.Mvc.NewtonsoftJson --version 7.0.2
 
+### Generate PATCH request from terminal
+Invoke-RestMethod http://localhost:5000/api/suppliers/1  -Method PATCH -ContentType "application/json"  -Body '[{"op":"replace","path":"City","value":"Los Angeles"}]'
